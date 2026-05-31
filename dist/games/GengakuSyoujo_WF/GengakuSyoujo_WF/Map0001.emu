@@ -1,0 +1,412 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LMU>
+ <Map>
+  <chipset_id>1</chipset_id>
+  <width>1</width>
+  <height>1</height>
+  <scroll_type>0</scroll_type>
+  <parallax_flag>F</parallax_flag>
+  <parallax_name></parallax_name>
+  <parallax_loop_x>F</parallax_loop_x>
+  <parallax_loop_y>F</parallax_loop_y>
+  <parallax_auto_loop_x>F</parallax_auto_loop_x>
+  <parallax_sx>0</parallax_sx>
+  <parallax_auto_loop_y>F</parallax_auto_loop_y>
+  <parallax_sy>0</parallax_sy>
+  <generator_flag>F</generator_flag>
+  <generator_mode>0</generator_mode>
+  <top_level>T</top_level>
+  <generator_tiles>0</generator_tiles>
+  <generator_width>4</generator_width>
+  <generator_height>2</generator_height>
+  <generator_surround>T</generator_surround>
+  <generator_upper_wall>T</generator_upper_wall>
+  <generator_floor_b>T</generator_floor_b>
+  <generator_floor_c>T</generator_floor_c>
+  <generator_extra_b>T</generator_extra_b>
+  <generator_extra_c>T</generator_extra_c>
+  <generator_x>0 0 0 0 0 0 0 0 0</generator_x>
+  <generator_y>0 0 0 0 0 0 0 0 0</generator_y>
+  <generator_tile_ids>49 49 49 49 49 49 10000 10001 10006 10007 10000 10001 10006 10007 10000 10001 10006 10007</generator_tile_ids>
+  <lower_layer>0</lower_layer>
+  <upper_layer>10000</upper_layer>
+  <events>
+   <Event id="0001">
+    <name>Reset_map</name>
+    <x>0</x>
+    <y>0</y>
+    <pages>
+     <EventPage id="0001">
+      <condition>
+       <EventPageCondition>
+        <flags>
+         <EventPageCondition_Flags>
+          <switch_a>F</switch_a>
+          <switch_b>F</switch_b>
+          <variable>F</variable>
+          <item>F</item>
+          <actor>F</actor>
+          <timer>F</timer>
+          <timer2>F</timer2>
+         </EventPageCondition_Flags>
+        </flags>
+        <switch_a_id>2</switch_a_id>
+        <switch_b_id>1</switch_b_id>
+        <variable_id>1</variable_id>
+        <variable_value>0</variable_value>
+        <item_id>1</item_id>
+        <actor_id>1</actor_id>
+        <timer_sec>0</timer_sec>
+        <timer2_sec>0</timer2_sec>
+        <compare_operator>1</compare_operator>
+       </EventPageCondition>
+      </condition>
+      <character_name></character_name>
+      <character_index>0</character_index>
+      <character_direction>2</character_direction>
+      <character_pattern>1</character_pattern>
+      <translucent>F</translucent>
+      <move_type>0</move_type>
+      <move_frequency>3</move_frequency>
+      <trigger>4</trigger>
+      <layer>0</layer>
+      <overlap_forbidden>F</overlap_forbidden>
+      <animation_type>0</animation_type>
+      <move_speed>3</move_speed>
+      <move_route>
+       <MoveRoute>
+        <move_commands></move_commands>
+        <repeat>T</repeat>
+        <skippable>F</skippable>
+       </MoveRoute>
+      </move_route>
+      <event_commands>
+       <EventCommand>
+        <code>11070</code>
+        <indent>0</indent>
+        <string></string>
+        <parameters>0 1</parameters>
+       </EventCommand>
+       <EventCommand>
+        <code>10220</code>
+        <indent>0</indent>
+        <string></string>
+        <parameters>0 1 0 0 19 4 70 2 1</parameters>
+       </EventCommand>
+       <EventCommand>
+        <code>10220</code>
+        <indent>0</indent>
+        <string></string>
+        <parameters>0 2 0 0 19 4 71 2 1</parameters>
+       </EventCommand>
+       <EventCommand>
+        <code>11110</code>
+        <indent>0</indent>
+        <string>Logo</string>
+        <parameters>1 1 1 2 0 50 80 1 100 100 100 100 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 2 0 0</parameters>
+       </EventCommand>
+       <EventCommand>
+        <code>3032</code>
+        <indent>0</indent>
+        <string></string>
+        <parameters>17 1 2 100 0 7 0</parameters>
+       </EventCommand>
+       <EventCommand>
+        <code>12010</code>
+        <indent>0</indent>
+        <string></string>
+        <parameters>1 74 0 0 1 1</parameters>
+       </EventCommand>
+       <EventCommand>
+        <code>12410</code>
+        <indent>1</indent>
+        <string>Game</string>
+        <parameters></parameters>
+       </EventCommand>
+       <EventCommand>
+        <code>10220</code>
+        <indent>1</indent>
+        <string></string>
+        <parameters>1 73 74 0 0 0</parameters>
+       </EventCommand>
+       <EventCommand>
+        <code>3007</code>
+        <indent>1</indent>
+        <string>&#xe001;× \v[75]&#xe001;&#xe001;ms gothic</string>
+        <parameters>16 2 1 2 100 0 100 100 100 100 0 0 0 126976 65537 9 0 1 0 0 10</parameters>
+       </EventCommand>
+       <EventCommand>
+        <code>10220</code>
+        <indent>1</indent>
+        <string></string>
+        <parameters>0 1 0 2 0 32</parameters>
+       </EventCommand>
+       <EventCommand>
+        <code>11110</code>
+        <indent>1</indent>
+        <string>aoi_faceui_1</string>
+        <parameters>3 1 1 2 0 100 100 1 100 100 100 100 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 7 0 97</parameters>
+       </EventCommand>
+       <EventCommand>
+        <code>11120</code>
+        <indent>1</indent>
+        <string></string>
+        <parameters>3 1 1 2 0 100 0 0 100 100 100 100 0 0 1 0 0 0 0 0 0 0</parameters>
+       </EventCommand>
+       <EventCommand>
+        <code>10220</code>
+        <indent>1</indent>
+        <string></string>
+        <parameters>1 1 2 0 0 0</parameters>
+       </EventCommand>
+       <EventCommand>
+        <code>12010</code>
+        <indent>1</indent>
+        <string></string>
+        <parameters>1 89 0 4 5 1</parameters>
+       </EventCommand>
+       <EventCommand>
+        <code>11510</code>
+        <indent>2</indent>
+        <string>umi4</string>
+        <parameters>1000 70 100 50</parameters>
+       </EventCommand>
+       <EventCommand>
+        <code>11550</code>
+        <indent>2</indent>
+        <string>Call</string>
+        <parameters>50 200 50</parameters>
+       </EventCommand>
+       <EventCommand>
+        <code>10</code>
+        <indent>2</indent>
+        <string></string>
+        <parameters></parameters>
+       </EventCommand>
+       <EventCommand>
+        <code>22010</code>
+        <indent>1</indent>
+        <string></string>
+        <parameters></parameters>
+       </EventCommand>
+       <EventCommand>
+        <code>11510</code>
+        <indent>2</indent>
+        <string>wf_o</string>
+        <parameters>1000 70 80 50</parameters>
+       </EventCommand>
+       <EventCommand>
+        <code>10</code>
+        <indent>2</indent>
+        <string></string>
+        <parameters></parameters>
+       </EventCommand>
+       <EventCommand>
+        <code>22011</code>
+        <indent>1</indent>
+        <string></string>
+        <parameters></parameters>
+       </EventCommand>
+       <EventCommand>
+        <code>12210</code>
+        <indent>1</indent>
+        <string></string>
+        <parameters>1 0 30 0 0</parameters>
+       </EventCommand>
+       <EventCommand>
+        <code>11610</code>
+        <indent>2</indent>
+        <string></string>
+        <parameters>1 0 1 1 0 0 0 1 0 0 0 0 0 0</parameters>
+       </EventCommand>
+       <EventCommand>
+        <code>12010</code>
+        <indent>2</indent>
+        <string></string>
+        <parameters>1 1 0 0 3 0</parameters>
+       </EventCommand>
+       <EventCommand>
+        <code>12120</code>
+        <indent>3</indent>
+        <string></string>
+        <parameters>1</parameters>
+       </EventCommand>
+       <EventCommand>
+        <code>10</code>
+        <indent>3</indent>
+        <string></string>
+        <parameters></parameters>
+       </EventCommand>
+       <EventCommand>
+        <code>22011</code>
+        <indent>2</indent>
+        <string></string>
+        <parameters></parameters>
+       </EventCommand>
+       <EventCommand>
+        <code>11410</code>
+        <indent>2</indent>
+        <string></string>
+        <parameters>0 0</parameters>
+       </EventCommand>
+       <EventCommand>
+        <code>10</code>
+        <indent>2</indent>
+        <string></string>
+        <parameters></parameters>
+       </EventCommand>
+       <EventCommand>
+        <code>22210</code>
+        <indent>1</indent>
+        <string></string>
+        <parameters>1 0 30 0 0</parameters>
+       </EventCommand>
+       <EventCommand>
+        <code>12110</code>
+        <indent>1</indent>
+        <string></string>
+        <parameters>1</parameters>
+       </EventCommand>
+       <EventCommand>
+        <code>10220</code>
+        <indent>1</indent>
+        <string></string>
+        <parameters>0 1 0 0 19 4 70 2 1</parameters>
+       </EventCommand>
+       <EventCommand>
+        <code>10220</code>
+        <indent>1</indent>
+        <string></string>
+        <parameters>0 2 0 0 19 4 71 2 1</parameters>
+       </EventCommand>
+       <EventCommand>
+        <code>11120</code>
+        <indent>1</indent>
+        <string></string>
+        <parameters>1 1 1 2 0 50 100 0 100 100 100 100 0 0 2 1 0 0 0 0 0 0</parameters>
+       </EventCommand>
+       <EventCommand>
+        <code>12330</code>
+        <indent>1</indent>
+        <string></string>
+        <parameters>0 2 16</parameters>
+       </EventCommand>
+       <EventCommand>
+        <code>10220</code>
+        <indent>1</indent>
+        <string></string>
+        <parameters>0 1 0 0 0 0</parameters>
+       </EventCommand>
+       <EventCommand>
+        <code>10830</code>
+        <indent>1</indent>
+        <string></string>
+        <parameters>89 1 1</parameters>
+       </EventCommand>
+       <EventCommand>
+        <code>10</code>
+        <indent>1</indent>
+        <string></string>
+        <parameters></parameters>
+       </EventCommand>
+       <EventCommand>
+        <code>22010</code>
+        <indent>0</indent>
+        <string></string>
+        <parameters></parameters>
+       </EventCommand>
+       <EventCommand>
+        <code>12010</code>
+        <indent>1</indent>
+        <string></string>
+        <parameters>0 1 0 0 0 0</parameters>
+       </EventCommand>
+       <EventCommand>
+        <code>12410</code>
+        <indent>2</indent>
+        <string>Game Clear</string>
+        <parameters></parameters>
+       </EventCommand>
+       <EventCommand>
+        <code>10220</code>
+        <indent>2</indent>
+        <string></string>
+        <parameters>0 1 0 0 19 4 70 2 1</parameters>
+       </EventCommand>
+       <EventCommand>
+        <code>10220</code>
+        <indent>2</indent>
+        <string></string>
+        <parameters>0 2 0 0 19 4 71 2 1</parameters>
+       </EventCommand>
+       <EventCommand>
+        <code>3007</code>
+        <indent>2</indent>
+        <string>&#xe001;GameClear!!
+
+Your Score : \v[75]&#xe001;&#xe001;ms gothic</string>
+        <parameters>16 2 1 2 100 0 100 100 100 100 0 0 0 94208 65537 10 0 1 0 0 10</parameters>
+       </EventCommand>
+       <EventCommand>
+        <code>10220</code>
+        <indent>2</indent>
+        <string></string>
+        <parameters>0 1 0 1 21 1 32769</parameters>
+       </EventCommand>
+       <EventCommand>
+        <code>10220</code>
+        <indent>2</indent>
+        <string></string>
+        <parameters>0 2 0 1 0 32</parameters>
+       </EventCommand>
+       <EventCommand>
+        <code>11110</code>
+        <indent>2</indent>
+        <string>synk_aoi</string>
+        <parameters>3 1 1 2 0 100 0 1 100 100 100 100 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 7 0 1</parameters>
+       </EventCommand>
+       <EventCommand>
+        <code>10220</code>
+        <indent>2</indent>
+        <string></string>
+        <parameters>0 2 0 2 0 48</parameters>
+       </EventCommand>
+       <EventCommand>
+        <code>3007</code>
+        <indent>2</indent>
+        <string>&#xe001;ERAI !!&#xe001;&#xe001;ms gothic</string>
+        <parameters>100663312 4 1 2 100 0 100 100 100 100 0 0 0 40960 65536 10 0 1 0 0 10</parameters>
+       </EventCommand>
+       <EventCommand>
+        <code>10</code>
+        <indent>2</indent>
+        <string></string>
+        <parameters></parameters>
+       </EventCommand>
+       <EventCommand>
+        <code>22011</code>
+        <indent>1</indent>
+        <string></string>
+        <parameters></parameters>
+       </EventCommand>
+       <EventCommand>
+        <code>10</code>
+        <indent>1</indent>
+        <string></string>
+        <parameters></parameters>
+       </EventCommand>
+       <EventCommand>
+        <code>22011</code>
+        <indent>0</indent>
+        <string></string>
+        <parameters></parameters>
+       </EventCommand>
+      </event_commands>
+     </EventPage>
+    </pages>
+   </Event>
+  </events>
+  <save_count_2k3e>130</save_count_2k3e>
+  <save_count>0</save_count>
+ </Map>
+</LMU>

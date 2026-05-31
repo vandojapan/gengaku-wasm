@@ -1,0 +1,12 @@
+
+> gengaku-wasm@0.1.0 dev
+> vite --host 0.0.0.0 --port 5174
+
+
+  [32m[1mVITE[22m v7.3.3[39m  [2mready in [0m[1m213[22m[2m[0m ms[22m
+
+  [32m➜[39m  [1mLocal[22m:   [36mhttp://localhost:[1m5174[22m/[39m
+  [32m➜[39m  [1mNetwork[22m: [36mhttp://169.254.83.107:[1m5174[22m/[39m
+  [32m➜[39m  [1mNetwork[22m: [36mhttp://172.19.112.1:[1m5174[22m/[39m
+  [32m➜[39m  [1mNetwork[22m: [36mhttp://192.168.11.160:[1m5174[22m/[39m
+  [32m➜[39m  [1mNetwork[22m: [36mhttp://192.168.56.1:[1m5174[22m/[39m
