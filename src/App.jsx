@@ -1,7 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { Expand, FileArchive, Gamepad2, Maximize2, MonitorPlay, Play } from 'lucide-react';
+import { Expand, FileArchive, Gamepad2, Maximize2, MonitorPlay, Play, Terminal, X } from 'lucide-react';
 import VirtualGamepad from './VirtualGamepad.jsx';
-import { BUNDLED_GAME_BASE, BUNDLED_GAME_FILES } from './bundledGameFiles.js';
 import {
   bootEasyRpgPlayer,
   dispatchGamepadKey,
@@ -9,14 +8,10 @@ import {
   probeEasyRpgRuntime,
   readBuiltInSoundFont,
   readGameZip,
-  readServerGameFiles,
   requestEasyRpgMapJump,
   subscribeEasyRpgEvents,
 } from './easyrpgBridge.js';
 
-const NOTICE_TEXT =
-  'ゲーム本体は配布していません。正規に入手したZIPを選択してください。ファイルはブラウザ内で処理され、サーバーには送信されません。';
-const BUNDLED_GAME_NAME = 'GengakuSyoujo_WF';
 const EVENT_BUTTON_LABEL = 'EVENT';
 const GENGAKU_TEST_GAME_NAME = 'Gengakushoujo';
 const GENGAKU_TEST_SOURCE_MAP_ID = 5;
@@ -36,6 +31,7 @@ export default function App() {
   const [soundFont, setSoundFont] = useState(null);
   const [zipProgress, setZipProgress] = useState(null);
   const [logs, setLogs] = useState([]);
+  const [logsVisible, setLogsVisible] = useState(false);
   const [runtimeEventButton, setRuntimeEventButton] = useState({
     visible: false,
     detail: null,
@@ -278,54 +274,6 @@ export default function App() {
     }
   }, [gameArchive, isStarting, soundFont]);
 
-  const handleUseBundledGame = useCallback(async () => {
-    setGameArchive(null);
-    setRuntimeEventButton({ visible: false, detail: null });
-    setCurrentRuntimeMap(null);
-    setZipProgress({ loaded: 0, total: BUNDLED_GAME_FILES.length, fileName: BUNDLED_GAME_NAME });
-    appendLog(setLogs, 'Loading public game', {
-      base: BUNDLED_GAME_BASE,
-      files: BUNDLED_GAME_FILES.length,
-    });
-    setStatus((current) => ({
-      ...current,
-      state: 'loading-public-game',
-      message: 'publicゲームをブラウザ内で読み込み中',
-    }));
-
-    try {
-      const archive = await readServerGameFiles({
-        name: BUNDLED_GAME_NAME,
-        baseUrl: BUNDLED_GAME_BASE,
-        files: BUNDLED_GAME_FILES,
-      }, (progress) => {
-        setZipProgress(progress);
-        if (progress.loaded === progress.total || progress.loaded % 20 === 0) {
-          appendLog(setLogs, 'Public game load progress', progress);
-        }
-      });
-
-      setGameArchive(archive);
-      appendLog(setLogs, 'Public game loaded', {
-        name: archive.name,
-        files: archive.fileCount,
-        sample: archive.files.slice(0, 8).map((entry) => entry.path),
-      });
-      setStatus((current) => ({
-        ...current,
-        state: runtime?.ready ? 'ready' : 'waiting',
-        message: runtime?.ready ? '同梱ゲームを起動できます' : 'WASM本体待ち',
-      }));
-    } catch (error) {
-      appendLog(setLogs, 'Public game load failed', errorToDetail(error));
-      setStatus((current) => ({
-        ...current,
-        state: 'error',
-        message: formatErrorMessage(error, 'publicゲームの読み込みに失敗しました'),
-      }));
-    }
-  }, [runtime]);
-
   const handleFullscreen = useCallback(async () => {
     const target = playerFrameRef.current;
     if (!target) {
@@ -395,7 +343,6 @@ export default function App() {
       </header>
 
       <section className="launcher-panel" aria-label="ゲームZIP選択">
-        <p className="notice">{NOTICE_TEXT}</p>
         <div className="launcher-actions">
           <input
             ref={fileInputRef}
@@ -404,22 +351,20 @@ export default function App() {
             accept=".zip,application/zip,application/x-zip-compressed"
             onChange={handleZipChange}
           />
-          <button
-            type="button"
-            className="primary-button"
-            onClick={() => fileInputRef.current?.click()}
-          >
-            <FileArchive aria-hidden="true" />
-            ZIPを選択
-          </button>
-          <button
-            type="button"
-            className="primary-button"
-            onClick={handleUseBundledGame}
-          >
-            <FileArchive aria-hidden="true" />
-            publicゲーム
-          </button>
+          <div className="archive-summary" aria-live="polite">
+            <span>{gameArchive?.name || 'ZIP未選択'}</span>
+            <span>{soundFont ? `Built-in: ${soundFont.name}` : 'Built-in SoundFont未検出'}</span>
+            <span>
+              {gameArchive
+                ? `${gameArchive.fileCount} files`
+                : 'File APIでローカルから読み込みます'}
+            </span>
+            {zipProgress && (
+              <span>
+                展開: {zipProgress.total ? `${zipProgress.loaded}/${zipProgress.total}` : '準備中'}
+              </span>
+            )}
+          </div>
           <button
             type="button"
             className="primary-button start-launch"
@@ -429,21 +374,6 @@ export default function App() {
             <Play aria-hidden="true" />
             {isStarting ? (isRunning ? 'リセット中' : '起動中') : (isRunning ? 'リセット' : '起動')}
           </button>
-        </div>
-
-        <div className="archive-summary" aria-live="polite">
-          <span>{gameArchive?.name || 'ZIP未選択'}</span>
-          <span>{soundFont ? `Built-in: ${soundFont.name}` : 'Built-in SoundFont未検出'}</span>
-          <span>
-            {gameArchive
-              ? `${gameArchive.fileCount} files`
-              : 'File APIでローカルから読み込みます'}
-          </span>
-          {zipProgress && (
-            <span>
-              展開: {zipProgress.total ? `${zipProgress.loaded}/${zipProgress.total}` : '準備中'}
-            </span>
-          )}
         </div>
       </section>
 
@@ -483,8 +413,16 @@ export default function App() {
                 <strong>{status.message}</strong>
                 <span>
                   public/easyrpg-player.js と public/easyrpg-player.wasm を優先して検出します。
-                  ZIPとpublicゲームは /game に展開して起動します。
+                  ZIPは /game に展開して起動します。
                 </span>
+                <button
+                  type="button"
+                  className="primary-button overlay-zip-button"
+                  onClick={() => fileInputRef.current?.click()}
+                >
+                  <FileArchive aria-hidden="true" />
+                  ZIPを選択
+                </button>
               </div>
             )}
             {runtimeEventButton.visible && (
@@ -502,15 +440,40 @@ export default function App() {
         </div>
       </section>
 
-      <section className="log-panel" aria-label="起動ログ">
-        <div className="log-header">
-          <h2>起動ログ</h2>
-          <button type="button" className="text-button" onClick={() => setLogs([])}>
-            Clear
-          </button>
-        </div>
-        <pre>{logs.length ? logs.map(formatLogEntry).join('\n') : 'ログはまだありません。'}</pre>
-      </section>
+      <button
+        type="button"
+        className="log-toggle-button"
+        onClick={() => setLogsVisible((visible) => !visible)}
+        aria-expanded={logsVisible}
+        aria-label="起動ログを表示"
+        title="起動ログ"
+      >
+        <Terminal aria-hidden="true" />
+        {logs.length > 0 && <span>{Math.min(logs.length, 99)}</span>}
+      </button>
+
+      {logsVisible && (
+        <section className="log-panel" aria-label="起動ログ">
+          <div className="log-header">
+            <h2>起動ログ</h2>
+            <div className="log-actions">
+              <button type="button" className="text-button" onClick={() => setLogs([])}>
+                Clear
+              </button>
+              <button
+                type="button"
+                className="icon-only-button"
+                onClick={() => setLogsVisible(false)}
+                aria-label="ログを閉じる"
+                title="閉じる"
+              >
+                <X aria-hidden="true" />
+              </button>
+            </div>
+          </div>
+          <pre>{logs.length ? logs.map(formatLogEntry).join('\n') : 'ログはまだありません。'}</pre>
+        </section>
+      )}
     </main>
   );
 }

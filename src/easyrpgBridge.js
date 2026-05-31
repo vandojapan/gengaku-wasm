@@ -391,6 +391,11 @@ export async function readSoundFontFile(file) {
   };
 }
 
+export async function readBuiltInFont() {
+  // TTF loading is intentionally stubbed for now. SoundFont loading remains active.
+  return null;
+}
+
 export async function readBuiltInSoundFont() {
   const candidates = [
     REMOTE_BUILTIN_SOUNDFONT_URL,
