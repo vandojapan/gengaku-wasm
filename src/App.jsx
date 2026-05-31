@@ -85,12 +85,6 @@ export default function App() {
     if (hasMapDetail(detail)) {
       setCurrentRuntimeMap(detail);
     }
-    if (shouldShowRuntimeEventButton(detail, gameArchive)) {
-      setRuntimeEventButton({
-        visible: true,
-        detail,
-      });
-    }
   }), [gameArchive]);
 
   useEffect(() => {
@@ -109,10 +103,6 @@ export default function App() {
 
       if (shouldShowRuntimeEventButton(detail, gameArchive)) {
         appendLog(setLogs, 'Gengakushoujo Map0005 A trigger detected', detail);
-        setRuntimeEventButton({
-          visible: true,
-          detail,
-        });
       }
     };
 
@@ -467,13 +457,15 @@ export default function App() {
                 </span>
               </div>
             )}
-            <button
-              type="button"
-              className="runtime-event-button"
-              onClick={handleRuntimeEventButton}
-            >
-              {runtimeEventButton.detail?.label || buildGengakuMap0004ButtonDetail().label || EVENT_BUTTON_LABEL}
-            </button>
+            {runtimeEventButton.visible && (
+              <button
+                type="button"
+                className="runtime-event-button"
+                onClick={handleRuntimeEventButton}
+              >
+                {runtimeEventButton.detail?.label || EVENT_BUTTON_LABEL}
+              </button>
+            )}
           </div>
 
           <VirtualGamepad visible={gamepadVisible} />
