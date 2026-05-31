@@ -14,6 +14,7 @@ const BUILTIN_SOUNDFONT_CANDIDATES = [
   '/soundfonts/GeneralUser-GS.sf2',
   '/soundfonts/GeneralUser2.sf2',
 ];
+const REMOTE_BUILTIN_SOUNDFONT_URL = import.meta.env.MID_SF2 || 'https://cdn.4vando.com/GeneralUser-GS.sf2';
 const GAME_ROOT = '/game';
 const SOUNDFONT_ROOT = '/soundfont';
 const KEYBOARD_ALIASES = {
@@ -391,6 +392,7 @@ export async function readSoundFontFile(file) {
 
 export async function readBuiltInSoundFont() {
   const candidates = [
+    REMOTE_BUILTIN_SOUNDFONT_URL,
     ...await readSoundFontManifests(),
     ...BUILTIN_SOUNDFONT_CANDIDATES,
   ].filter((path) => path.toLowerCase().endsWith('.sf2'));

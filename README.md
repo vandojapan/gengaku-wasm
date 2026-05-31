@@ -96,3 +96,13 @@ window.easyRpgEventBridge.emit({ mapName: 'Map0005' });
 ```
 
 Pressing the `Map0004` button dispatches `easyrpg:jump-request` with `{ mapId: 4, mapName: 'Map0004' }`; if a compatible EasyRPG map jump API is exposed later, the bridge will call it.
+
+## Cloudflare Pages asset limit
+
+Cloudflare Pages has a 25 MiB limit per single asset. The build script removes oversized files from `dist` after Vite copies `public`.
+
+`public/GeneralUser-GS.sf2` is kept for local development, but it is too large for Pages. In production, the app reads the SoundFont URL from `MID_SF2`. If it is not set, this default is used:
+
+```text
+MID_SF2=https://cdn.4vando.com/GeneralUser-GS.sf2
+```
