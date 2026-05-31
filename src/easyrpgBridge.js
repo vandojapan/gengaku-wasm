@@ -14,7 +14,8 @@ const BUILTIN_SOUNDFONT_CANDIDATES = [
   '/soundfonts/GeneralUser-GS.sf2',
   '/soundfonts/GeneralUser2.sf2',
 ];
-const REMOTE_BUILTIN_SOUNDFONT_URL = import.meta.env.MID_SF2 || 'https://cdn.4vando.com/GeneralUser-GS.sf2';
+const DEFAULT_BUILTIN_SOUNDFONT_URL = 'https://cdn.4vando.com/GeneralUser-GS.sf2';
+const REMOTE_BUILTIN_SOUNDFONT_URL = normalizeRemoteAssetUrl(import.meta.env.MID_SF2) || DEFAULT_BUILTIN_SOUNDFONT_URL;
 const GAME_ROOT = '/game';
 const SOUNDFONT_ROOT = '/soundfont';
 const KEYBOARD_ALIASES = {
@@ -398,7 +399,17 @@ export async function readBuiltInSoundFont() {
   ].filter((path) => path.toLowerCase().endsWith('.sf2'));
 
   for (const path of [...new Set(candidates)]) {
-    const response = await fetch(path, { cache: 'no-store' });
+    let response;
+    try {
+      response = await fetch(path, { cache: 'no-store', mode: 'cors' });
+    } catch (error) {
+      console.warn('Built-in SoundFont fetch failed', {
+        path,
+        message: error?.message || String(error),
+      });
+      continue;
+    }
+
     if (!response.ok || isHtmlResponse(response)) {
       continue;
     }
@@ -894,6 +905,18 @@ function encodePath(path) {
 
 function isHtmlResponse(response) {
   return (response.headers.get('content-type') || '').includes('text/html');
+}
+
+function normalizeRemoteAssetUrl(value) {
+  if (!value) {
+    return '';
+  }
+
+  if (/^https?:\/\//i.test(value)) {
+    return value;
+  }
+
+  return `https://${value.replace(/^\/+/, '')}`;
 }
 
 function keyToCode(key) {
