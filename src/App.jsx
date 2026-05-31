@@ -411,10 +411,6 @@ export default function App() {
               <div className="status-overlay" role="status">
                 <MonitorPlay aria-hidden="true" />
                 <strong>{status.message}</strong>
-                <span>
-                  public/easyrpg-player.js と public/easyrpg-player.wasm を優先して検出します。
-                  ZIPは /game に展開して起動します。
-                </span>
                 <button
                   type="button"
                   className="primary-button overlay-zip-button"

@@ -842,7 +842,71 @@ h1 {
   }
 
   .status-overlay {
-    padding: 16px;
+    gap: 7px;
+    padding: 12px;
+  }
+
+  .status-overlay svg {
+    width: 28px;
+    height: 28px;
+  }
+
+  .status-overlay strong {
+    max-width: 100%;
+    font-size: clamp(1rem, 5vw, 1.45rem);
+    line-height: 1.15;
+  }
+
+  .status-overlay span {
+    max-width: min(30rem, 92%);
+    font-size: 0.72rem;
+    line-height: 1.35;
+  }
+
+  .overlay-zip-button {
+    width: auto;
+    max-width: 100%;
+    min-height: 36px;
+    padding: 0 12px;
+    white-space: nowrap;
+  }
+
+  .log-toggle-button {
+    top: calc(max(10px, env(safe-area-inset-top)) + 44px);
+    right: max(10px, env(safe-area-inset-right));
+    bottom: auto;
+    width: 40px;
+    height: 40px;
+  }
+
+  .log-toggle-button span {
+    display: none;
+  }
+
+  .log-panel {
+    top: calc(max(10px, env(safe-area-inset-top)) + 90px);
+    right: max(10px, env(safe-area-inset-right));
+    bottom: auto;
+    width: min(520px, calc(100vw - 20px));
+  }
+
+  .log-panel pre {
+    max-height: min(38vh, 220px);
+  }
+}
+
+@media (max-width: 700px) and (orientation: portrait) {
+  .fit-width-button {
+    display: none;
+  }
+
+  .log-toggle-button {
+    top: max(10px, env(safe-area-inset-top));
+    right: max(10px, env(safe-area-inset-right));
+  }
+
+  .log-panel {
+    top: calc(max(10px, env(safe-area-inset-top)) + 50px);
   }
 }
 
