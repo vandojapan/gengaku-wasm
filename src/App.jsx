@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { Expand, FileArchive, Gamepad2, MonitorPlay, Play } from 'lucide-react';
+import { Expand, FileArchive, Gamepad2, Maximize2, MonitorPlay, Play } from 'lucide-react';
 import VirtualGamepad from './VirtualGamepad.jsx';
 import { BUNDLED_GAME_BASE, BUNDLED_GAME_FILES } from './bundledGameFiles.js';
 import {
@@ -43,6 +43,8 @@ export default function App() {
   const [currentRuntimeMap, setCurrentRuntimeMap] = useState(null);
   const [isStarting, setIsStarting] = useState(false);
   const [isRunning, setIsRunning] = useState(false);
+  const [fullscreenActive, setFullscreenActive] = useState(false);
+  const [fitWidth, setFitWidth] = useState(false);
   const [status, setStatus] = useState({
     state: 'checking',
     message: 'WASM本体を確認中',
@@ -79,6 +81,15 @@ export default function App() {
   }, []);
 
   useEffect(() => installKeyboardAliases(), []);
+
+  useEffect(() => {
+    const handleFullscreenChange = () => {
+      setFullscreenActive(document.fullscreenElement === playerFrameRef.current);
+    };
+
+    document.addEventListener('fullscreenchange', handleFullscreenChange);
+    return () => document.removeEventListener('fullscreenchange', handleFullscreenChange);
+  }, []);
 
   useEffect(() => subscribeEasyRpgEvents((detail) => {
     appendLog(setLogs, 'EasyRPG event detected', detail);
@@ -324,10 +335,12 @@ export default function App() {
     try {
       if (document.fullscreenElement) {
         await document.exitFullscreen();
+        unlockLandscapeOrientation();
         return;
       }
 
       await target.requestFullscreen();
+      await lockLandscapeOrientation();
     } catch (error) {
       setStatus((current) => ({
         ...current,
@@ -435,7 +448,24 @@ export default function App() {
       </section>
 
       <section className="player-layout" aria-label="EasyRPG player">
-        <div ref={playerFrameRef} className="player-frame">
+        <div
+          ref={playerFrameRef}
+          className={[
+            'player-frame',
+            fullscreenActive ? 'is-fullscreen is-landscape-layout' : '',
+            fitWidth ? 'is-fit-width' : '',
+          ].filter(Boolean).join(' ')}
+        >
+          <button
+            type="button"
+            className="fit-width-button"
+            onClick={() => setFitWidth((current) => !current)}
+            aria-pressed={fitWidth}
+            title="比率を保って横幅にフィット"
+          >
+            <Maximize2 aria-hidden="true" />
+            <span>Fit</span>
+          </button>
           <div className="canvas-frame">
             <canvas
               id="canvas"
@@ -572,6 +602,22 @@ function normalizeMatchText(value) {
 
 function normalizeGameName(value) {
   return normalizeMatchText(value).replace(/syoujo/g, 'shoujo');
+}
+
+async function lockLandscapeOrientation() {
+  try {
+    await screen.orientation?.lock?.('landscape');
+  } catch {
+    // Orientation lock support varies by mobile browser.
+  }
+}
+
+function unlockLandscapeOrientation() {
+  try {
+    screen.orientation?.unlock?.();
+  } catch {
+    // Best effort only.
+  }
 }
 
 function appendLog(setLogs, message, detail) {
