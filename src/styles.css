@@ -245,9 +245,8 @@ h1 {
 .canvas-frame {
   position: relative;
   min-height: 240px;
-  max-height: calc(100vh - 250px);
   aspect-ratio: 4 / 3;
-  width: 100%;
+  width: min(100%, calc((100vh - 250px) * 4 / 3));
   margin: 0 auto;
   border: 1px solid var(--line);
   border-radius: 8px;
@@ -288,8 +287,16 @@ h1 {
 
 .game-canvas {
   display: block;
-  width: 100%;
-  height: 100%;
+  position: absolute !important;
+  inset: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  min-width: 100% !important;
+  min-height: 100% !important;
+  max-width: 100% !important;
+  max-height: 100% !important;
+  margin: 0 !important;
+  object-fit: contain;
   image-rendering: pixelated;
   outline: none;
 }
@@ -541,6 +548,7 @@ h1 {
 
   .canvas-frame {
     max-height: none;
+    width: 100%;
   }
 
   .virtual-gamepad {

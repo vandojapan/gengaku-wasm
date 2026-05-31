@@ -16,14 +16,6 @@ const BUILTIN_SOUNDFONT_CANDIDATES = [
 ];
 const GAME_ROOT = '/game';
 const SOUNDFONT_ROOT = '/soundfont';
-const AOI_LEVEL_RPG_RT_INI = `[RPG_RT]
-GameTitle=Aoi_Level
-MapEditMode=2
-MapEditZoom=0
-FullPackageFlag=1
-pf=1
-winW=640
-`;
 const KEYBOARD_ALIASES = {
   w: 'ArrowUp',
   a: 'ArrowLeft',
@@ -346,7 +338,7 @@ export async function readGameZip(file, onProgress) {
     name: file.name,
     size: file.size,
     fileCount: files.length,
-    files: applyGameFileOverrides(normalizeGameRoot(files)),
+    files: normalizeGameRoot(files),
   };
 }
 
@@ -379,7 +371,7 @@ export async function readServerGameFiles({ name, baseUrl, files }, onProgress) 
     name,
     size: loadedFiles.reduce((total, file) => total + file.size, 0),
     fileCount: loadedFiles.length,
-    files: applyGameFileOverrides(loadedFiles),
+    files: loadedFiles,
   };
 }
 
@@ -860,37 +852,6 @@ function normalizeGameRoot(files) {
   }
 
   return stripSingleCommonRoot(files);
-}
-
-function applyGameFileOverrides(files) {
-  if (!isAoiLevelProject(files)) {
-    return files;
-  }
-
-  const iniData = new TextEncoder().encode(AOI_LEVEL_RPG_RT_INI);
-  const nextFiles = files.filter((file) => basename(file.path).toLowerCase() !== 'rpg_rt.ini');
-  nextFiles.push({
-    path: 'RPG_RT.ini',
-    data: iniData,
-    size: iniData.byteLength,
-  });
-
-  return nextFiles;
-}
-
-function isAoiLevelProject(files) {
-  return files.some((file) => basename(file.path).toLowerCase() === 'aoi_level.r3proj')
-    || files.some((file) => {
-      if (basename(file.path).toLowerCase() !== 'rpg_rt.ini') {
-        return false;
-      }
-
-      try {
-        return new TextDecoder('utf-8', { fatal: false }).decode(file.data).includes('GameTitle=Aoi_Level');
-      } catch {
-        return false;
-      }
-    });
 }
 
 function findGameRoot(files) {
