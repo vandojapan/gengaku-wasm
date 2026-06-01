@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { Expand, FileArchive, Gamepad2, Maximize2, MonitorPlay, Play, Terminal, X } from 'lucide-react';
+import { Expand, FileArchive, Gamepad2, Info, Maximize2, MonitorPlay, Play, Terminal, X } from 'lucide-react';
 import VirtualGamepad from './VirtualGamepad.jsx';
 import {
   bootEasyRpgPlayer,
@@ -32,6 +32,7 @@ export default function App() {
   const [zipProgress, setZipProgress] = useState(null);
   const [logs, setLogs] = useState([]);
   const [logsVisible, setLogsVisible] = useState(false);
+  const [licenseVisible, setLicenseVisible] = useState(false);
   const [runtimeEventButton, setRuntimeEventButton] = useState({
     visible: false,
     detail: null,
@@ -436,17 +437,66 @@ export default function App() {
         </div>
       </section>
 
-      <button
-        type="button"
-        className="log-toggle-button"
-        onClick={() => setLogsVisible((visible) => !visible)}
-        aria-expanded={logsVisible}
-        aria-label="起動ログを表示"
-        title="起動ログ"
-      >
-        <Terminal aria-hidden="true" />
-        {logs.length > 0 && <span>{Math.min(logs.length, 99)}</span>}
-      </button>
+      <div className="floating-actions" aria-label="補助メニュー">
+        <button
+          type="button"
+          className="floating-toggle-button license-toggle-button"
+          onClick={() => {
+            setLicenseVisible((visible) => !visible);
+            setLogsVisible(false);
+          }}
+          aria-expanded={licenseVisible}
+          aria-label="ライセンスと謝辞を表示"
+          title="ライセンスと謝辞"
+        >
+          <Info aria-hidden="true" />
+        </button>
+        <button
+          type="button"
+          className="floating-toggle-button log-toggle-button"
+          onClick={() => {
+            setLogsVisible((visible) => !visible);
+            setLicenseVisible(false);
+          }}
+          aria-expanded={logsVisible}
+          aria-label="起動ログを表示"
+          title="起動ログ"
+        >
+          <Terminal aria-hidden="true" />
+          {logs.length > 0 && <span>{Math.min(logs.length, 99)}</span>}
+        </button>
+      </div>
+
+      {licenseVisible && (
+        <section className="info-panel" aria-label="ライセンスと謝辞">
+          <div className="log-header">
+            <h2>ライセンスと謝辞</h2>
+            <button
+              type="button"
+              className="icon-only-button"
+              onClick={() => setLicenseVisible(false)}
+              aria-label="ライセンスと謝辞を閉じる"
+              title="閉じる"
+            >
+              <X aria-hidden="true" />
+            </button>
+          </div>
+          <p>EasyRPG Player is developed by the EasyRPG project.</p>
+          <p>
+            Runtime repository:{' '}
+            <a
+              href="https://github.com/sevenc-nanashi/easyrpg-player/tree/gengaku-player/master"
+              target="_blank"
+              rel="noreferrer"
+            >
+              sevenc-nanashi/easyrpg-player
+            </a>
+          </p>
+          <p>Runtime patched by Nanashi.</p>
+          <p>Built with React, Vite, JSZip, and lucide-react.</p>
+          <p>Game assets are not distributed with this launcher.</p>
+        </section>
+      )}
 
       {logsVisible && (
         <section className="log-panel" aria-label="起動ログ">

@@ -28,6 +28,7 @@ body,
 #root {
   min-height: 100%;
   margin: 0;
+  overscroll-behavior-y: none;
 }
 
 body {
@@ -37,6 +38,7 @@ body {
     radial-gradient(circle at 18% 8%, rgba(36, 90, 167, 0.08), transparent 18rem),
     #ede7d2;
   overflow-x: hidden;
+  overscroll-behavior-y: none;
 }
 
 button {
@@ -188,7 +190,8 @@ h1 {
   background: rgba(255, 255, 255, 0.42);
 }
 
-.log-panel {
+.log-panel,
+.info-panel {
   position: fixed;
   right: max(16px, env(safe-area-inset-right));
   bottom: calc(max(16px, env(safe-area-inset-bottom)) + 58px);
@@ -232,7 +235,7 @@ h1 {
 }
 
 .icon-only-button,
-.log-toggle-button {
+.floating-toggle-button {
   border: 1px solid var(--line);
   border-radius: 8px;
   background: var(--panel-strong);
@@ -252,18 +255,24 @@ h1 {
   height: 16px;
 }
 
-.log-toggle-button {
+.floating-actions {
   position: fixed;
   right: max(16px, env(safe-area-inset-right));
   bottom: max(16px, env(safe-area-inset-bottom));
   z-index: 21;
+  display: flex;
+  gap: 8px;
+}
+
+.floating-toggle-button {
+  position: relative;
   width: 46px;
   height: 46px;
   color: var(--blue);
   box-shadow: 0 10px 24px rgba(72, 58, 32, 0.22);
 }
 
-.log-toggle-button svg {
+.floating-toggle-button svg {
   width: 20px;
   height: 20px;
 }
@@ -288,30 +297,40 @@ h1 {
 
 .icon-only-button:hover,
 .icon-only-button:focus-visible,
-.log-toggle-button:hover,
-.log-toggle-button:focus-visible,
-.log-toggle-button[aria-expanded="true"] {
+.floating-toggle-button:hover,
+.floating-toggle-button:focus-visible,
+.floating-toggle-button[aria-expanded="true"] {
   border-color: var(--red);
   color: var(--red);
   outline: none;
 }
 
-.log-panel pre {
+.log-panel pre,
+.info-panel p {
   max-height: 140px;
   margin: 0;
-  overflow: auto;
-  white-space: pre-wrap;
-  word-break: break-word;
   color: #24314f;
   font-size: 0.78rem;
   line-height: 1.45;
+}
+
+.log-panel pre {
+  overflow: auto;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.info-panel a {
+  color: var(--blue);
+  font-weight: 800;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 2px;
 }
 
 .player-layout {
   min-height: 0;
   display: block;
 }
-
 .player-frame {
   width: calc(100% - 24px);
   margin: 0 auto;
@@ -871,10 +890,13 @@ h1 {
     white-space: nowrap;
   }
 
-  .log-toggle-button {
+  .floating-actions {
     top: calc(max(10px, env(safe-area-inset-top)) + 44px);
     right: max(10px, env(safe-area-inset-right));
     bottom: auto;
+  }
+
+  .floating-toggle-button {
     width: 40px;
     height: 40px;
   }
@@ -883,7 +905,8 @@ h1 {
     display: none;
   }
 
-  .log-panel {
+  .log-panel,
+  .info-panel {
     top: calc(max(10px, env(safe-area-inset-top)) + 90px);
     right: max(10px, env(safe-area-inset-right));
     bottom: auto;
@@ -900,12 +923,13 @@ h1 {
     display: none;
   }
 
-  .log-toggle-button {
+  .floating-actions {
     top: max(10px, env(safe-area-inset-top));
     right: max(10px, env(safe-area-inset-right));
   }
 
-  .log-panel {
+  .log-panel,
+  .info-panel {
     top: calc(max(10px, env(safe-area-inset-top)) + 50px);
   }
 }
