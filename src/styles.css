@@ -277,24 +277,6 @@ h1 {
   height: 20px;
 }
 
-.log-toggle-button span {
-  position: absolute;
-  right: -6px;
-  top: -6px;
-  min-width: 20px;
-  height: 20px;
-  border: 1px solid #fff7e3;
-  border-radius: 999px;
-  background: var(--red);
-  color: #fff7e3;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0 5px;
-  font-size: 0.68rem;
-  font-weight: 800;
-}
-
 .icon-only-button:hover,
 .icon-only-button:focus-visible,
 .floating-toggle-button:hover,
@@ -930,10 +912,6 @@ h1 {
   .floating-toggle-button {
     width: 40px;
     height: 40px;
-  }
-
-  .log-toggle-button span {
-    display: none;
   }
 
   .log-panel,

@@ -483,11 +483,10 @@ export default function App() {
             aria-expanded={logsVisible}
             aria-label="起動ログを表示"
             title="起動ログ"
-          >
-            <Terminal aria-hidden="true" />
-            {logs.length > 0 && <span>{Math.min(logs.length, 99)}</span>}
-          </button>
-        </div>
+        >
+          <Terminal aria-hidden="true" />
+        </button>
+      </div>
       )}
 
       {licenseVisible && (
