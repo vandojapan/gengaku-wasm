@@ -328,7 +328,7 @@ export default function App() {
       <header className="topbar">
         <div>
           <p className="eyebrow">EasyRPG Web Launcher</p>
-          <h1>ローカルZIPから起動</h1>
+          <h1>弦楽プレイヤー</h1>
         </div>
         <div className="toolbar" aria-label="表示設定">
           <button
