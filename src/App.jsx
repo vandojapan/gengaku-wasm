@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { Expand, FileArchive, Gamepad2, Info, Maximize2, MonitorPlay, Play, Terminal, X } from 'lucide-react';
+import { Expand, FileArchive, Gamepad2, Info, Maximize2, MonitorPlay, Play, Shrink, Terminal, X } from 'lucide-react';
 import VirtualGamepad from './VirtualGamepad.jsx';
 import {
   bootEasyRpgPlayer,
@@ -81,11 +81,15 @@ export default function App() {
 
   useEffect(() => {
     const handleFullscreenChange = () => {
-      setFullscreenActive(document.fullscreenElement === playerFrameRef.current);
+      setFullscreenActive(getFullscreenElement() === playerFrameRef.current);
     };
 
     document.addEventListener('fullscreenchange', handleFullscreenChange);
-    return () => document.removeEventListener('fullscreenchange', handleFullscreenChange);
+    document.addEventListener('webkitfullscreenchange', handleFullscreenChange);
+    return () => {
+      document.removeEventListener('fullscreenchange', handleFullscreenChange);
+      document.removeEventListener('webkitfullscreenchange', handleFullscreenChange);
+    };
   }, []);
 
   useEffect(() => subscribeEasyRpgEvents((detail) => {
@@ -282,13 +286,19 @@ export default function App() {
     }
 
     try {
-      if (document.fullscreenElement) {
-        await document.exitFullscreen();
+      if (fullscreenActive || getFullscreenElement()) {
+        await exitFullscreen();
+        setFullscreenActive(false);
+        setLogsVisible(false);
+        setLicenseVisible(false);
         unlockLandscapeOrientation();
         return;
       }
 
-      await target.requestFullscreen();
+      setLogsVisible(false);
+      setLicenseVisible(false);
+      await requestFullscreen(target);
+      setFullscreenActive(true);
       await lockLandscapeOrientation();
     } catch (error) {
       setStatus((current) => ({
@@ -296,7 +306,7 @@ export default function App() {
         message: error.message || '全画面表示に切り替えられませんでした',
       }));
     }
-  }, []);
+  }, [fullscreenActive]);
 
   const handleRuntimeEventButton = useCallback(() => {
     const buttonDetail = runtimeEventButton.detail || buildGengakuMap0004ButtonDetail();
@@ -397,6 +407,17 @@ export default function App() {
             <Maximize2 aria-hidden="true" />
             <span>Fit</span>
           </button>
+          {fullscreenActive && (
+            <button
+              type="button"
+              className="fullscreen-exit-button"
+              onClick={handleFullscreen}
+              title="全画面を戻す"
+            >
+              <Shrink aria-hidden="true" />
+              <span>Full</span>
+            </button>
+          )}
           <div className="canvas-frame">
             <canvas
               id="canvas"
@@ -437,35 +458,37 @@ export default function App() {
         </div>
       </section>
 
-      <div className="floating-actions" aria-label="補助メニュー">
-        <button
-          type="button"
-          className="floating-toggle-button license-toggle-button"
-          onClick={() => {
-            setLicenseVisible((visible) => !visible);
-            setLogsVisible(false);
-          }}
-          aria-expanded={licenseVisible}
-          aria-label="ライセンスと謝辞を表示"
-          title="ライセンスと謝辞"
-        >
-          <Info aria-hidden="true" />
-        </button>
-        <button
-          type="button"
-          className="floating-toggle-button log-toggle-button"
-          onClick={() => {
-            setLogsVisible((visible) => !visible);
-            setLicenseVisible(false);
-          }}
-          aria-expanded={logsVisible}
-          aria-label="起動ログを表示"
-          title="起動ログ"
-        >
-          <Terminal aria-hidden="true" />
-          {logs.length > 0 && <span>{Math.min(logs.length, 99)}</span>}
-        </button>
-      </div>
+      {!fullscreenActive && (
+        <div className="floating-actions" aria-label="補助メニュー">
+          <button
+            type="button"
+            className="floating-toggle-button license-toggle-button"
+            onClick={() => {
+              setLicenseVisible((visible) => !visible);
+              setLogsVisible(false);
+            }}
+            aria-expanded={licenseVisible}
+            aria-label="ライセンスと謝辞を表示"
+            title="ライセンスと謝辞"
+          >
+            <Info aria-hidden="true" />
+          </button>
+          <button
+            type="button"
+            className="floating-toggle-button log-toggle-button"
+            onClick={() => {
+              setLogsVisible((visible) => !visible);
+              setLicenseVisible(false);
+            }}
+            aria-expanded={logsVisible}
+            aria-label="起動ログを表示"
+            title="起動ログ"
+          >
+            <Terminal aria-hidden="true" />
+            {logs.length > 0 && <span>{Math.min(logs.length, 99)}</span>}
+          </button>
+        </div>
+      )}
 
       {licenseVisible && (
         <section className="info-panel" aria-label="ライセンスと謝辞">
@@ -627,6 +650,39 @@ function unlockLandscapeOrientation() {
   } catch {
     // Best effort only.
   }
+}
+
+function getFullscreenElement() {
+  return document.fullscreenElement
+    || document.webkitFullscreenElement
+    || document.msFullscreenElement
+    || null;
+}
+
+async function requestFullscreen(target) {
+  const request = target.requestFullscreen
+    || target.webkitRequestFullscreen
+    || target.webkitEnterFullscreen
+    || target.msRequestFullscreen;
+
+  if (typeof request !== 'function') {
+    return;
+  }
+
+  await request.call(target);
+}
+
+async function exitFullscreen() {
+  const exit = document.exitFullscreen
+    || document.webkitExitFullscreen
+    || document.webkitCancelFullScreen
+    || document.msExitFullscreen;
+
+  if (typeof exit !== 'function') {
+    return;
+  }
+
+  await exit.call(document);
 }
 
 function appendLog(setLogs, message, detail) {

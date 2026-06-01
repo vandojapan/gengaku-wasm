@@ -384,7 +384,9 @@ h1 {
 }
 
 .player-frame.is-fullscreen {
-  position: relative;
+  position: fixed;
+  inset: 0;
+  z-index: 15;
   width: 100vw;
   height: 100vh;
   max-width: none;
@@ -409,6 +411,20 @@ h1 {
   aspect-ratio: 4 / 3;
   border-radius: 0;
   box-shadow: none;
+}
+
+.player-frame.is-fullscreen .fit-width-button {
+  background: transparent;
+  color: rgba(255, 255, 255, 0.88);
+  border-color: rgba(255, 255, 255, 0.7);
+  box-shadow: none;
+}
+
+.player-frame.is-fullscreen .fit-width-button:hover,
+.player-frame.is-fullscreen .fit-width-button:focus-visible,
+.player-frame.is-fullscreen .fit-width-button[aria-pressed="true"] {
+  color: #fff;
+  border-color: #fff;
 }
 
 .player-frame:fullscreen .virtual-gamepad {
@@ -605,10 +621,10 @@ h1 {
   filter: brightness(1.08);
 }
 
-.fit-width-button {
+.fit-width-button,
+.fullscreen-exit-button {
   position: fixed;
   top: max(10px, env(safe-area-inset-top));
-  right: max(10px, env(safe-area-inset-right));
   z-index: 7;
   min-height: 32px;
   border: 1px solid rgba(255, 255, 255, 0.42);
@@ -626,14 +642,29 @@ h1 {
   backdrop-filter: blur(8px);
 }
 
-.fit-width-button svg {
+.fit-width-button {
+  right: max(10px, env(safe-area-inset-right));
+}
+
+.fullscreen-exit-button {
+  left: max(10px, env(safe-area-inset-left));
+  background: transparent;
+  color: rgba(255, 255, 255, 0.88);
+  border-color: rgba(255, 255, 255, 0.7);
+  box-shadow: none;
+}
+
+.fit-width-button svg,
+.fullscreen-exit-button svg {
   width: 15px;
   height: 15px;
 }
 
 .fit-width-button:hover,
 .fit-width-button:focus-visible,
-.fit-width-button[aria-pressed="true"] {
+.fit-width-button[aria-pressed="true"],
+.fullscreen-exit-button:hover,
+.fullscreen-exit-button:focus-visible {
   border-color: var(--red);
   color: var(--red);
   outline: none;
@@ -923,6 +954,28 @@ h1 {
     display: none;
   }
 
+  .player-frame.is-fullscreen.is-landscape-layout {
+    inset: auto;
+    left: 50%;
+    top: 50%;
+    width: 100vh;
+    height: 100vw;
+    transform: translate(-50%, -50%) rotate(90deg);
+    transform-origin: center;
+    justify-content: center;
+  }
+
+  .player-frame.is-fullscreen.is-landscape-layout .canvas-frame,
+  .player-frame.is-fullscreen.is-landscape-layout.is-fit-width .canvas-frame {
+    width: min(calc(100vh - 260px), calc((100vw - 18px) * 4 / 3));
+    max-width: calc((100vw - 18px) * 4 / 3);
+    max-height: calc(100vw - 18px);
+  }
+
+  .player-frame.is-fullscreen.is-landscape-layout .game-canvas {
+    object-fit: contain;
+  }
+
   .floating-actions {
     top: max(10px, env(safe-area-inset-top));
     right: max(10px, env(safe-area-inset-right));
@@ -1042,4 +1095,13 @@ h1 {
 .player-frame.is-landscape-layout.is-fit-width .canvas-frame {
   width: calc(100vw - 24px);
   max-width: none;
+}
+
+@media (max-width: 700px) and (orientation: portrait) {
+  .player-frame.is-fullscreen.is-landscape-layout .canvas-frame,
+  .player-frame.is-fullscreen.is-landscape-layout.is-fit-width .canvas-frame {
+    width: min(calc(100vh - 260px), calc((100vw - 18px) * 4 / 3));
+    max-width: calc((100vw - 18px) * 4 / 3);
+    max-height: calc(100vw - 18px);
+  }
 }
